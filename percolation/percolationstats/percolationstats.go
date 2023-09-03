@@ -52,14 +52,12 @@ func (p *PercolationStats) Mean() float64 {
 }
 
 func (p *PercolationStats) StdDev() float64 {
-    var sum float64
-
-    for _, x := range p.xs {
-        diff := p.Mean() - x
-        diff *= diff
-        sum += diff
+    var sd float64
+    mean := p.Mean()
+    for j := 0; j < len(p.xs); j++ {
+        sd += math.Pow(p.xs[j] - mean, 2)
     }
-    return math.Sqrt(sum)
+    return math.Sqrt(sd/float64(len(p.xs)))
 }
 
 func (p *PercolationStats) ConfidenceHigh() float64 {
